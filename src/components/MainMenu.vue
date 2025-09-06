@@ -1,16 +1,21 @@
-﻿<script setup>
-import { inject } from 'vue'
+<script setup>
+import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import GameSetup from '@/components/GameSetup.vue'
 
 const { t } = useI18n()
 const locale = inject('locale')
+const isStartingNewGame = ref(false)
+defineProps({ game: Object })
 </script>
 
 <template>
   <div :class="$style.layout">
-    <div>
-      {{locale}}
-      <button @click="startNewGame">{{ t('NewGame') }}</button>
+    <div v-if="!isStartingNewGame">
+      <button @click="isStartingNewGame=true">{{ t('NewGame') }}</button>
+    </div>
+    <div v-else>
+      <GameSetup :game="game"/>
     </div>
     <label>{{ t('Language') }} <select v-model="locale">
       <option value="ru">{{ t('Russian') }}</option>

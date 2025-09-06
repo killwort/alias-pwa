@@ -1,18 +1,16 @@
 <template>
-  <MainMenu v-if="!game.currentGame"/>
-  <Game v-if="game.currentGame"/>
+  <MainMenu v-if="!game.currentGame" :game="game"/>
+  <GameContainer v-if="game.currentGame" :game="game"/>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { instance } from './gamestate'
 import MainMenu from './components/MainMenu.vue'
-import Game from './components/Game.vue'
-
-const game = ref(instance)
-
+import GameContainer from './components/GameContainer.vue'
+import GameState from '@/gamestate'
+import { inject, ref } from 'vue'
+const locale = inject('locale')
+const game = ref(new GameState(locale))
 </script>
-
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -20,6 +18,6 @@ const game = ref(instance)
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  user-select: none;
 }
 </style>

@@ -11,9 +11,9 @@ module.exports = defineConfig({
       runtimeOnly: false,
       compositionOnly: false,
       fullInstall: true
-    },
+    }
+  },
     pwa: {
       name: 'Alias'
     }
-  }
 })

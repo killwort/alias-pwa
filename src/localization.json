@@ -46,7 +46,8 @@
     }
   },
   "en": {
-    "Round": "Round {round} end for {team}",
+    "Round": "Round {round}",
+    "RoundEnd": "Round {0} summary for {1}",
     "NextRound": "Next round",
     "Total": "{count} point total|{count} points total",
     "PrepareTeam": "Get ready {team}!",
@@ -72,6 +73,11 @@
     "RuleTime": "Round time",
     "RuleTargetScore": "Target score",
     "StartGame": "Start game",
+    "GameSetup": "Game setup",
+    "RuleAlternateWordChoice": "Improved word choice",
+    "ResetUsedWords": "Reset used words",
+    "StartRound": "Ready, let's go!",
+    "ExitGame": "End game",
     "Wordlists": {
       "orange_brainstorm": "Stolen hard",
       "orange_easy": "Stolen easy",

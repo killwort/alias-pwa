@@ -5,12 +5,12 @@ import ruPlr from 'raw-loader!./plurals.ru.txt'
 import enPlr from 'raw-loader!./plurals.en.txt'
 
 const adjectives = {
-  ru: ruAdj.split('\n').map((line) => line.trim()),
-  en: enAdj.split('\n').map((line) => line.trim())
+  ru: ruAdj.split('\n').map((line) => line.trim()).filter(line => line.length > 0),
+  en: enAdj.split('\n').map((line) => line.trim()).filter(line => line.length > 0)
 }
 const plurals = {
-  ru: ruPlr.split('\n').map((line) => line.trim()),
-  en: enPlr.split('\n').map((line) => line.trim())
+  ru: ruPlr.split('\n').map((line) => line.trim()).filter(line => line.length > 0),
+  en: enPlr.split('\n').map((line) => line.trim()).filter(line => line.length > 0)
 }
 export default function (locale) {
   let name = ''

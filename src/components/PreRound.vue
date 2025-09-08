@@ -1,27 +1,45 @@
 ﻿<script setup>
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
 const props = defineProps({ game: Object })
 </script>
 
 <template>
-  <h1>{{ t('Round', {round:props.game.currentGame.round}) }}</h1>
-  <h2>{{ t('PrepareTeam', {team:props.game.currentGame.rules.teams[props.game.currentGame.playingTeam]}) }}</h2>
-  <div v-for="(t,i) in props.game.currentGame.rules.teams" :key="i">
-    {{t}}
-    {{game.currentGame.gameScore(i)}}
+  <div :class="$style.layout">
+    <h1>{{ t('Round', {round: props.game.currentGame.round}) }}</h1>
+    <h2><i18n-t keypath="PrepareTeam"><span :class="ui.teamName">{{ props.game.currentGame.rules.teams[props.game.currentGame.playingTeam] }}</span></i18n-t></h2>
+    <div :class="$style.teams">
+      <p v-for="(t,i) in props.game.currentGame.rules.teams" :key="i">
+        <span :class="ui.teamName">{{ t }}</span>
+        {{ game.currentGame.gameScore(i) }}
+      </p>
+    </div>
+    <div>
+      <button :class="ui.button" @click="game.currentGame.startRound()">{{ t('StartRound') }}</button>
+    </div>
+    <div>
+      <button :class="ui.smallButton" @click="game.reset()">{{ t('ExitGame') }}</button>
+    </div>
   </div>
-  <button @click="game.currentGame.startRound()">{{t('Готовы, начинаем')}}</button>
 </template>
-
-<style scoped>
-
-</style>
-<i18n>
-{
-  "ru": {
-    "Round": "Раунд {round}",
-    "PrepareTeam": "Команда {team} приготовиться!"
-  }
+<style module="ui" src="@/ui.css"/>
+<style module>
+.layout {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
 }
-</i18n>
+.teams{
+  composes: list from '../ui.css';
+  text-align: left;
+}
+.teams>p{
+  margin: 0.25em 0;
+  display: flex;
+}
+.teams>p>span{
+  flex: 1 1 100%;
+}
+</style>
+<i18n src="@/localization.json"/>

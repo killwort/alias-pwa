@@ -1,43 +1,67 @@
 ﻿<script setup>
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import SwipeBox from '@/components/SwipeBox.vue'
 
 const { t } = useI18n()
 const props = defineProps({ game: Object })
 const roundTimeLeft = ref(props.game.currentGame.roundTimeLeft)
 
-setInterval(function () {
-  roundTimeLeft.value = props.game.currentGame.roundTimeLeft
-  props.game.currentGame.checkTimer()
+const intervalId = setInterval(function () {
+  if (props.game.currentGame) {
+    roundTimeLeft.value = props.game.currentGame.roundTimeLeft
+    props.game.currentGame.checkTimer()
+  }
 }, 1000)
+onBeforeUnmount(() => clearInterval(intervalId))
 </script>
 
 <template>
-  <SwipeBox @swipeup="props.game.currentGame.record(true)" @swipedown="props.game.currentGame.record(false)">
+  <SwipeBox @swipeup="props.game.currentGame.record(true)" @swipedown="props.game.currentGame.record(false)" :class="$style.layout">
     <h3>{{ t('Round', {round: props.game.currentGame.round}) }}</h3>
-    <h3>{{ t('Team', {team: props.game.currentGame.rules.teams[props.game.currentGame.playingTeam]}) }}</h3>
+    <h4>
+      <i18n-t keypath="Team"><span :class="ui.teamName">{{ props.game.currentGame.rules.teams[props.game.currentGame.playingTeam] }}</span></i18n-t>
+    </h4>
     <h2>{{ roundTimeLeft }}</h2>
     <div :class="$style.fitLimiter">
-    <h1 :class="$style.fitContainer">
-      <span><span>{{ props.game.currentGame.currentWord }}</span></span>
-      <span aria-hidden="true">{{ props.game.currentGame.currentWord }}</span>
-    </h1>
+      <p :class="$style.fitContainer">
+        <span><span>{{ props.game.currentGame.currentWord }}</span></span>
+        <span aria-hidden="true">{{ props.game.currentGame.currentWord }}</span>
+      </p>
     </div>
-    <div>
-      <button @click="props.game.currentGame.record(false)">{{ t('Skip') }}</button>
-      <button @click="props.game.currentGame.record(true)">{{ t('Correct') }}</button>
+    <div :class="$style.buttons">
+      <button :class="$style.skip" @click="props.game.currentGame.record(false)">{{ t('Skip') }}</button>
+      <button :class="$style.ok" @click="props.game.currentGame.record(true)">{{ t('Correct') }}</button>
     </div>
   </SwipeBox>
 </template>
-
+<style module="ui" src="@/ui.css"/>
 <style module>
-.fitLimiter{
-  max-width:600px;
-  margin: 0 auto;
+.layout{
+  display: grid;
+  height: 100%;
+  grid-template-rows: repeat(3,auto) 1fr auto;
+}
+.buttons{
+  display: grid;
+  grid-column-gap: .5em;
+  grid-template-columns: 1fr 1fr;
+}
+.skip{
+  composes: smallButton from '../ui.css';
+  background: linear-gradient(37deg, #ffa6a6, #ffb3a6);
+}
+.ok{
+  composes: smallButton from '../ui.css';
+  background: linear-gradient(37deg, #e6ffa6, #caffa6);
+}
+.fitLimiter {
   text-transform: uppercase;
   letter-spacing: .33em;
+  font-weight: bold;
+  margin: 3em 0 3em 0;
 }
+
 .fitContainer {
   display: flex;
   container-type: inline-size;
@@ -101,13 +125,4 @@ setInterval(function () {
   inherits: true;
 }
 </style>
-<i18n>
-{
-  "ru": {
-    "Round": "Раунд {round}",
-    "Team": "Команда {team}",
-    "Skip": "Пропустить",
-    "Correct": "Угадано!"
-  }
-}
-</i18n>
+<i18n src="@/localization.json"/>

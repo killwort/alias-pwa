@@ -6,33 +6,37 @@ const props = defineProps({ game: Object })
 </script>
 
 <template>
-  <h1>{{t('Title')}}</h1>
+  <h1>{{t('GameOver')}}</h1>
   <h2>{{t('FinalScores')}}</h2>
-  <div v-for="(t,i) in props.game.currentGame.rules.teams" :key="i">
-    {{t}}
+  <div :class="$style.teams">
+  <p v-for="(t,i) in props.game.currentGame.rules.teams" :key="i">
+    <span :class="ui.teamName">{{t}}</span>
     {{game.currentGame.gameScore(i)}}
+  </p>
   </div>
   <h2>{{t('Winner')}}</h2>
-  <h2>{{ game.currentGame.rules.teams[game.currentGame.winningTeam] }}</h2>
-  <div>
-    <button @click="game.start(game.currentGame.rules)">{{t('NewGameLikeThis')}}</button>
-  </div>
-  <div>
-    <button @click="game.reset()">{{t('NewGameSetup')}}</button>
-  </div>
+  <h2 :class="ui.teamName">{{ game.currentGame.rules.teams[game.currentGame.winningTeam] }}</h2>
+  <p>
+    <button :class="ui.button" @click="game.start(game.currentGame.rules)">{{t('NewGameLikeThis')}}</button>
+  </p>
+  <p>
+    <button :class="ui.button" @click="game.reset()">{{t('NewGameSetup')}}</button>
+  </p>
 </template>
-
+<style module="ui" src="@/ui.css"/>
 <style module>
-
-</style>
-<i18n>
-{
-  "ru": {
-    "Title": "Конец игры",
-    "FinalScores": "Финальный счёт",
-    "Winner": "Победитель",
-    "NewGameLikeThis": "Ещё игра с теми же командами",
-    "NewGameSetup": "Вернуться в меню"
-  }
+.teams{
+  composes: list from '../ui.css';
+  max-height: 6rem;
+  overflow-y: auto;
+  text-align: left;
 }
-</i18n>
+.teams>p{
+  margin: 0.25em 0;
+  display: flex;
+}
+.teams>p>span{
+  flex: 1 1 100%;
+}
+</style>
+<i18n src="@/localization.json"/>

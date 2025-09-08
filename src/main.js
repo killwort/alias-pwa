@@ -27,17 +27,18 @@ function slavicPlurals (choice, choicesLength, orgRule) {
 }
 
 const locale = matchLocale(localStorage.getItem('language')) || matchLocale(navigator.language) || navigator.languages.find(x => matchLocale(x)) || supportedLocales[0]
-
 const app = createApp(App)
 
 app.provide('locale', locale)
-app.use(createI18n({
+const i18n = createI18n({
   pluralRules: {
     ru: slavicPlurals
   },
   legacy: false,
   locale,
   messages: { en: {}, ru: {} }
-}))
+})
+app.use(i18n)
 
 app.mount('#app')
+export { app, i18n }

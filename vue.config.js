@@ -1,7 +1,7 @@
-const {defineConfig} = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: '/alias/',
+  publicPath: '/alias-pwa/',
   pluginOptions: {
     i18n: {
       locale: 'en',
